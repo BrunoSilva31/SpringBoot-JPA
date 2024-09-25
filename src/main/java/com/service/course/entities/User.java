@@ -1,16 +1,24 @@
 package com.service.course.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+
 
 @Entity
 @Table(name="tb_user")
 public class User implements Serializable{
+
+    private static final long serialVersionUID = 1L;
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,6 +27,10 @@ public class User implements Serializable{
     private String email;
     private String phone;
     private String password;
+    
+    @JsonIgnore
+    @OneToMany(mappedBy="client")
+    private List<Order> orders = new ArrayList<>();
 
     public User(){}
     public User(Long id, String name, String email, String phone, String password) {
@@ -67,6 +79,12 @@ public class User implements Serializable{
     public void setPassword(String password) {
         this.password = password;
     }
+    
+    @OneToMany(mappedBy = "client")
+    public List<Order> getOrders() {
+        return orders;
+    }
+
 
 
     @Override
@@ -93,5 +111,6 @@ public class User implements Serializable{
         return true;
     }
 
+    
     
 }
